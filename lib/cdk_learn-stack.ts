@@ -1,11 +1,23 @@
-import * as cdk from 'aws-cdk-lib';
-import { Construct } from 'constructs';
+import * as cdk from "aws-cdk-lib";
+import { Construct } from "constructs";
+import { CfnEC2Fleet } from "aws-cdk-lib/aws-ec2";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
 // import * as sqs from 'aws-cdk-lib/aws-sqs';
+//const exvpc = ec2.Vpc.fromLookup(this,  "ImportVPC", { isDefault: true });
 
 export class CdkLearnStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
-
+    const server1 = new ec2.Instance(this, "TestInstance", {
+      vpc: ec2.Vpc.fromLookup(this, "ImportVPC", { isDefault: true }),
+      instanceType: ec2.InstanceType.of(
+        ec2.InstanceClass.T3,
+        ec2.InstanceSize.MICRO,
+      ),
+      machineImage: new ec2.AmazonLinuxImage({
+        generation: ec2.AmazonLinuxGeneration.AMAZON_LINUX_2,
+      }),
+    });
     // The code that defines your stack goes here
 
     // example resource
