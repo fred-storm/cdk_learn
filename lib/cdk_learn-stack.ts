@@ -2,6 +2,9 @@ import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
 import { CfnEC2Fleet } from "aws-cdk-lib/aws-ec2";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
+import * as lambda from "aws-cdk-lib/aws-lambda";
+import path = require("path");
+
 // import * as sqs from 'aws-cdk-lib/aws-sqs';
 //const exvpc = ec2.Vpc.fromLookup(this,  "ImportVPC", { isDefault: true });
 
@@ -17,6 +20,11 @@ export class CdkLearnStack extends cdk.Stack {
       machineImage: new ec2.AmazonLinuxImage({
         generation: ec2.AmazonLinuxGeneration.AMAZON_LINUX_2,
       }),
+    });
+    const fnEndpoint = new lambda.Function(this, "getEndpoint7575", {
+      runtime: lambda.Runtime.NODEJS_20_X,
+      handler: "index.handler", //filename must have the .handler for this property.(Filename is actually index.mjs)
+      code: lambda.Code.fromAsset(path.join(__dirname, "../getEndpoint")),
     });
     // The code that defines your stack goes here
 
