@@ -6,6 +6,7 @@ import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as sqs from "aws-cdk-lib/aws-sqs";
 import * as dest from "aws-cdk-lib/aws-lambda-destinations";
 import path = require("path");
+import * as s3 from "aws-cdk-lib/aws-s3";
 
 // import * as sqs from 'aws-cdk-lib/aws-sqs';
 //const exvpc = ec2.Vpc.fromLookup(this,  "ImportVPC", { isDefault: true });
@@ -13,6 +14,7 @@ import path = require("path");
 export class CdkLearnStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
+    const learnBucket = new s3.Bucket(this, "wxApp7575");
     const server1 = new ec2.Instance(this, "TestInstance", {
       vpc: ec2.Vpc.fromLookup(this, "ImportVPC", { isDefault: true }),
       instanceType: ec2.InstanceType.of(
