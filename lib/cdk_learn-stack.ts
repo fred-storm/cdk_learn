@@ -3,6 +3,8 @@ import { Construct } from "constructs";
 import { CfnEC2Fleet } from "aws-cdk-lib/aws-ec2";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 import * as lambda from "aws-cdk-lib/aws-lambda";
+import * as sqs from "aws-cdk-lib/aws-sqs";
+import * as dest from "aws-cdk-lib/aws-lambda-destinations";
 import path = require("path");
 
 // import * as sqs from 'aws-cdk-lib/aws-sqs';
@@ -21,11 +23,23 @@ export class CdkLearnStack extends cdk.Stack {
         generation: ec2.AmazonLinuxGeneration.AMAZON_LINUX_2,
       }),
     });
+    const outlookQueue = new sqs.Queue(this, "outlookQueue7575", {
+      encryption: sqs.QueueEncryption.SQS_MANAGED,
+    });
+
     const fnEndpoint = new lambda.Function(this, "getEndpoint7575", {
       runtime: lambda.Runtime.NODEJS_20_X,
       handler: "index.handler", //filename must have the .handler for this property.(Filename is actually index.mjs)
       code: lambda.Code.fromAsset(path.join(__dirname, "../getEndpoint")),
+      onSuccess: new dest.SqsDestination(outlookQueue),
     });
+
+    const fnOutlook = new lambda.Function(this, "getOutlook7575", {
+      runtime: lambda.Runtime.NODEJS_20_X,
+      handler: "index.handler",
+      code: lambda.Code.fromAsset(path.join(__dirname, "../getOutlook")),
+    });
+
     // The code that defines your stack goes here
 
     // example resource
