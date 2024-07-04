@@ -14,7 +14,11 @@ import * as s3 from "aws-cdk-lib/aws-s3";
 export class CdkLearnStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
-    const learnBucket = new s3.Bucket(this, "wxApp7575");
+
+    const learnBucket = new s3.Bucket(this, "wxApp7575", {
+      versioned: true,
+    });
+
     const server1 = new ec2.Instance(this, "TestInstance", {
       vpc: ec2.Vpc.fromLookup(this, "ImportVPC", { isDefault: true }),
       instanceType: ec2.InstanceType.of(
