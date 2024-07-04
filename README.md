@@ -4,5 +4,5 @@ If you look close at the commit history and comments you should see, emerging th
 
 ## Goals
 
-[ ] Learn how to use CDK
-[ ] Deploy my weather app soley via CDK
+- [ ] Learn how to use CDK
+- [ ] Deploy my weather app soley via CDK
